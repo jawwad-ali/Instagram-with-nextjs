@@ -1,10 +1,12 @@
+import Feed from "../components/Feed";
 import Header from "../components/Header";
 
 export default function Home() {
   return (
     <div>
       <Header />
+      <Feed />
     </div>
   )
 }
-// starts from 55,17
+// 1.35.58
