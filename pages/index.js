@@ -9,10 +9,11 @@ export default function Home() {
         <title>Instagram Using Next js</title>
         <link />
       </Head>
+
+      
       <Header />
       <Feed />
     </div>
   )
 }
-// 1.35.58
-// 2.03.35
+// 2.21.11
