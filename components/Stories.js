@@ -7,7 +7,7 @@ function Stories() {
     const [suggestions, setSuggestions] = useState([])
     useEffect(() => {
         // populating data from faker.js
-        const suggestions = [...Array(20)].map((_, i) => ({
+        const suggestions = [...Array(20)].map((_, i) => ({ 
             ...faker.helpers.contextualCard(),
             id: i
         }))

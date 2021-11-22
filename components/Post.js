@@ -14,12 +14,12 @@ function Post({ id, userName, userImg, postImg, caption }) {
     return (
         <div className="bg-white my-7 border">
             <div className="flex items-center p-5">
-                <img src={userImg} alt={userName} className="rounded-full h-12 w-12 object-contain border p-1 mr-3" />
+                <img src={userImg} alt="" className="rounded-full h-12 w-12 object-contain border p-1 mr-3" />
                 <p className="font-bold flex-1">{userName}</p>
                 <DotsHorizontalIcon className="h-5" />
             </div>
 
-            <img src={userImg} alt="Error" className="object-cover w-full" />
+            <img src={postImg} alt="Error" className="object-cover w-full" />
 
             <div className="flex justify-between mt-4 mx-4">
                 <div className="flex space-x-4">
