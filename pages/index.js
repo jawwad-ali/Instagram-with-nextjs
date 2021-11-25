@@ -1,19 +1,37 @@
 import Feed from "../components/Feed";
 import Header from "../components/Header";
 import Head from "next/head"
+import { useSession } from "next-auth/react"
+import Modal from "../components/Modal"
 
 export default function Home() {
-  return (
-    <div className="bg-gray-50 h-screen overflow-y-scroll scrollbar-hide">
-      <Head>
-        <title>Instagram Using Next js</title>
-        <link />
-      </Head>
 
+  const { data: session } = useSession()
 
-      <Header />
-      <Feed />
-    </div>
-  )
+  if (!session) {
+    return <>
+      <div className="bg-gray-50 h-screen overflow-y-scroll scrollbar-hide">
+        <Head>
+          <title>Instagram Using Next js</title>
+          <link />
+        </Head>
+        <Header />
+      </div>
+    </>
+  }
+  else {
+    return <>
+      <div className="bg-gray-50 h-screen overflow-y-scroll scrollbar-hide">
+        <Head>
+          <title>Instagram Using Next js</title>
+          <link />
+        </Head>
+
+        <Modal />
+        <Header />
+        <Feed />
+      </div>
+    </>
+  }
 }
-// 3.08.08
+// 4.10.00
