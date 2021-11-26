@@ -3,14 +3,55 @@ import { CameraIcon } from "@heroicons/react/outline"
 import { Fragment, useRef, useState } from "react"
 import { useRecoilState } from "recoil"
 import { modalState } from "../atoms/modalAtom"
+import { db, storage } from "../firebase"
+import { useSession } from "next-auth/react"
+import { addDoc, serverTimestamp, updateDoc, doc, collection } from "firebase/firestore/lite"
+import { ref, uploadString, getDownloadURL } from "firebase/storage"
 
 function Modal() {
     const [open, setOpen] = useRecoilState(modalState)
     const [selectedFile, setSelectedFile] = useState(null)
     const filePickerRef = useRef(null)
     const captionRef = useRef(null)
+    const [loading, setLoading] = useState(false)
+    const { data: session } = useSession()
 
-    // getting the image, user selected
+    const uploadImage = async () => {
+        if (loading) return
+        setLoading(true)
+
+        /**
+         * create a post and add to firestore
+         * get the PostId for newly created post
+         */
+
+        const docRef = await addDoc(collection(db, "posts"), {
+            username: session.user.name,
+            caption: captionRef.current.value,
+            userProfileImg: session.user.image,
+            timestamp: serverTimestamp()
+        })
+
+        //  * upload image to firebase storage with PostID
+        //  * get a download URL from firebase storage and update post with the iamge
+
+        const imageRef = ref(storage, `posts/${docRef.id}/image`)
+
+        await uploadString(imageRef, selectedFile, "data_url").then(async snapshot => {
+            const downloadURL = await getDownloadURL(imageRef)
+
+            await updateDoc(doc(db, "posts", docRef.id), {
+                image: downloadURL
+            })
+        })
+
+        setOpen(false)
+        setLoading(false)
+        setSelectedFile(null)
+    }
+
+
+    //  getting the image, user selected
     const addImageToPost = (e) => {
         const reader = new FileReader()
 
@@ -105,11 +146,13 @@ function Modal() {
                                 </div>
                                 <div className="mt-5 sm:mt-6">
                                     <button className="inline-flex justify-center w-full rounded-md border border-transparent 
-                    shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white /*hover:bg-red-700*/
-                    focus: outline: none focus: ring-2 focus: ring-offset-2 focuse: ring-red-500 sm: text-sm disabled: bg-gray-500
-                    disabled: cursor-not-allowed hover: disabled: bg-gray-500
-                    ">
-                                        Upload Post
+                                            shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white /*hover:bg-red-700*/
+                                            focus: outline: none focus: ring-2 focus: ring-offset-2 focuse: ring-red-500 sm:text-sm disabled: bg-gray-500
+                                            disabled:cursor-not-allowed hover:disabled:bg-gray-500"
+                                        onClick={uploadImage}
+                                        disabled={!selectedFile}
+                                    >
+                                        {loading ? "Uploading..." : "Upload a Photo"}
                                     </button>
                                 </div>
                             </div>

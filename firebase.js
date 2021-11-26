@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp, getApps, getApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore"
+import { getFirestore } from "firebase/firestore/lite"
 import { getStorage } from "firebase/storage"
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -14,6 +14,7 @@ const firebaseConfig = {
     measurementId: "G-LFH3JE9SXL"
 };
 
+// const app = initializeApp(firebaseConfig)
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp()
 const db = getFirestore()
 const storage = getStorage()
