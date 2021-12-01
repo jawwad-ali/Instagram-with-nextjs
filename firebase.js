@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp, getApps, getApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore/lite"
-import { getStorage } from "firebase/storage"
+import { getFirestore } from "firebase/firestore"
+import { getStorage } from "@firebase/storage"
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 const firebaseConfig = {
@@ -16,7 +16,7 @@ const firebaseConfig = {
 
 // const app = initializeApp(firebaseConfig)
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp()
-const db = getFirestore()
 const storage = getStorage()
+const db = getFirestore()
 
 export { app, db, storage }

@@ -18,7 +18,6 @@ import { modalState } from '../atoms/modalAtom'
 function Header() {
     const { data: session } = useSession()
     const [open, setOpen] = useRecoilState(modalState)
-    console.log("open", open)
 
     return (
         <div>

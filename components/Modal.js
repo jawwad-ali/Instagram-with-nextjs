@@ -5,7 +5,7 @@ import { useRecoilState } from "recoil"
 import { modalState } from "../atoms/modalAtom"
 import { db, storage } from "../firebase"
 import { useSession } from "next-auth/react"
-import { addDoc, serverTimestamp, updateDoc, doc, collection } from "firebase/firestore/lite"
+import { addDoc, serverTimestamp, updateDoc, doc, collection } from "firebase/firestore"
 import { ref, uploadString, getDownloadURL } from "firebase/storage"
 
 function Modal() {
@@ -16,6 +16,7 @@ function Modal() {
     const [loading, setLoading] = useState(false)
     const { data: session } = useSession()
 
+    // Upload image to firestore
     const uploadImage = async () => {
         if (loading) return
         setLoading(true)
@@ -34,9 +35,8 @@ function Modal() {
 
         //  * upload image to firebase storage with PostID
         //  * get a download URL from firebase storage and update post with the iamge
-
         const imageRef = ref(storage, `posts/${docRef.id}/image`)
-
+ 
         await uploadString(imageRef, selectedFile, "data_url").then(async snapshot => {
             const downloadURL = await getDownloadURL(imageRef)
 
@@ -49,7 +49,6 @@ function Modal() {
         setLoading(false)
         setSelectedFile(null)
     }
-
 
     //  getting the image, user selected
     const addImageToPost = (e) => {
